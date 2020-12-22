@@ -1,21 +1,13 @@
 # Importation de bibliothèques
 import cv2
 import os
-from datetime import *
+import log
+
 
 # Variable pour contenir le chemin au images
 image = 'data/img'
 # La variable "ficher" va contenir les éléments du dossier "img"
 fichier = os.listdir(image)
-
-
-def msg_filter(msg):
-    """
-    Rapporte les opérations effectués lors de l'exécution dans le fichier filter.log
-    :param msg: Le nom du fichier parcouru
-    """
-    with open('../filter.log', 'a') as log:
-        log.write(f"{datetime.now()} - Filtration en floue {msg}\n")
 
 
 # Parcourt les images du dossier "img" pour filtrer en flou les images
@@ -26,6 +18,6 @@ for photo in fichier:
         traitement = cv2.imread(chemin)
         dst = cv2.GaussianBlur(traitement, (41, 31), cv2.BORDER_DEFAULT)
         cv2.imwrite(f"data/output/{photo}", dst)
-        msg_filter(photo)
+        log.msg_filter(photo, 'floue')
     except cv2.error as e:
         print(e)
