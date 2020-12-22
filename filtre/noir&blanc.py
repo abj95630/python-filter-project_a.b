@@ -1,7 +1,7 @@
 # Importation de bibliothèques
 import cv2
 import os
-from filtre import log
+import log
 
 # Variable pour contenir le chemin au images
 image = '../data/img'

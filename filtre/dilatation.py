@@ -2,7 +2,7 @@
 import cv2
 import numpy
 import os
-from filtre import log
+import log
 
 # Variable pour contenir le chemin au images
 image = '../data/img'
