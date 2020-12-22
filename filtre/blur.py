@@ -1,4 +1,4 @@
-# Importation des bibliothèques
+# Importation de bibliothèques
 import cv2
 import os
 from datetime import *
@@ -14,7 +14,7 @@ def msg_filter(msg):
     Rapporte les opérations effectués lors de l'exécution dans le fichier filter.log
     :param msg: Le nom du fichier parcouru
     """
-    with open('filter.log', 'a') as log:
+    with open('../filter.log', 'a') as log:
         log.write(f"{datetime.now()} - Filtration en floue {msg}\n")
 
 
