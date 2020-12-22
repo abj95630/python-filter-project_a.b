@@ -8,5 +8,5 @@ def msg_filter(msg, filtre):
     :param filtre: Le filtre qui est utilisé
     :param msg: Le nom du fichier parcouru
     """
-    with open('filter.log', 'a') as log:
+    with open('filtre.log', 'a') as log:
         log.write(f"{datetime.now()} - Filtration en {filtre} {msg}\n")
