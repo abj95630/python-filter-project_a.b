@@ -37,7 +37,6 @@ def verif_fichier(fichier_param):
 def aide():
     """
     Permet aider l'utilsateur à bien utiliser l'application
-
     """
     print("Pour mener à bien les opérations de filtration d'images, voici quelques règles :")
     print("Il faut taper l'option '--filtrer' pour l'application des filtres aux images")
@@ -50,7 +49,6 @@ def aide():
 
 def pipeline(entree, sortie, v_floue, v_dilate):
     """
-
     :param entree: Le dossier source
     :param sortie: Le dossier de destination où seront déposé les images filtrées
     :param v_floue: la force du floue
@@ -67,5 +65,65 @@ def pipeline(entree, sortie, v_floue, v_dilate):
             dilate = cv2.dilate(nb, kernel, iterations=3)
             cv2.imwrite(str(sortie) + '/' + str(photo), dilate)
             log.msg_filter(photo, 'pipeline')
+        except cv2.error as e:
+            print(e)
+
+
+def dilate_floue(entree, sortie, force_dil, force_floue):
+    """
+    :param entree: Le dossier source
+    :param sortie: Le dossier de destination où seront déposé les images filtrées
+    :param force_dil: la force de la dilatation
+    :param force_floue: la force du floue
+    """
+    fichier = os.listdir(entree)
+    for photo in fichier:
+        try:
+            chemin = entree + "/" + photo
+            traitement = cv2.imread(chemin)
+            floue = cv2.GaussianBlur(traitement, (force_floue, force_floue), cv2.BORDER_DEFAULT)
+            kernel = numpy.ones((force_dil, force_dil), numpy.uint8)
+            dilate = cv2.dilate(floue, kernel, iterations=3)
+            cv2.imwrite(str(sortie) + '/' + str(photo), dilate)
+            log.msg_filter(photo, 'dilate et en floue')
+        except cv2.error as e:
+            print(e)
+
+
+def dilate_nb(entree, sortie, v_dilate):
+    """
+    :param entree: Le dossier source
+    :param sortie: Le dossier de destination où seront déposé les images filtrées
+    :param v_dilate: la force de la dilatation
+    """
+    fichier = os.listdir(entree)
+    for photo in fichier:
+        try:
+            chemin = entree + "/" + photo
+            traitement = cv2.imread(chemin)
+            kernel = numpy.ones( (v_dilate, v_dilate), numpy.uint8)
+            dilate = cv2.dilate(traitement, kernel, iterations=3)
+            nb = cv2.cvtColor(dilate, cv2.COLOR_BGR2GRAY)
+            cv2.imwrite(str(sortie) + '/' + str(photo), nb)
+            log.msg_filter(photo, 'dilate et noir et blanc')
+        except cv2.error as e:
+            print(e)
+
+
+def floue_nb(entree, sortie, v_floue):
+    """
+    :param entree: Le dossier source
+    :param sortie: Le dossier de destination où seront déposé les images filtrées
+    :param v_floue: la force du floue
+    """
+    fichier = os.listdir(entree)
+    for photo in fichier:
+        try:
+            chemin = entree + "/" + photo
+            traitement = cv2.imread(chemin)
+            nb = cv2.cvtColor(traitement, cv2.COLOR_BGR2GRAY)
+            floue = cv2.GaussianBlur(nb, (v_floue, v_floue), cv2.BORDER_DEFAULT)
+            cv2.imwrite(str(sortie) + '/' + str(photo), floue)
+            log.msg_filter(photo, 'floue et noir et blanc')
         except cv2.error as e:
             print(e)
